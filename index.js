@@ -7,7 +7,13 @@ const angleXSlider = document.getElementById("angleX")
 const angleYSlider = document.getElementById("angleY")
 const angleZSlider = document.getElementById("angleZ")
 
-let shift = false
+let mouse = {
+    x: undefined,
+    lastX: undefined,
+    y: undefined,
+    lastY: undefined,
+    down: false
+}
 
 let drawnCenters = []
 
@@ -32,16 +38,12 @@ let angleX = 0
 let angleY = 0
 let angleZ = 0
 
-window.addEventListener("keydown", event => {
-    if (event.key == "Shift") shift = true
-})
-window.addEventListener("keyup", event => {
-    if (event.key == "Shift") shift = false
-})
-
 let animationInterval
 
 canvas.addEventListener("mousedown", event => {
+    mouse.x = event.x
+    mouse.y = event.y
+    mouse.down = true
     let color = checkInside(event.x, event.y)
     if (!color) return
     let side = cube.state.findIndex(thisState => { return thisState.center == color })
@@ -53,8 +55,27 @@ canvas.addEventListener("mousedown", event => {
         //not reverse
         animationInterval = setInterval(() => { animateRotation(side, 1) }, 10)
     }
+})
 
-    //console.log(checkInside(event.x,event.y))
+canvas.addEventListener("mouseup", event => {
+    mouse.down = false
+})
+
+canvas.addEventListener("mousemove", event =>{
+    if(!mouse.down) return
+
+    mouse.lastX = mouse.x
+    mouse.lastY = mouse.y
+    mouse.x = event.x
+    mouse.y = event.y
+
+    let deltaX = mouse.lastX-mouse.x
+    let deltaY = mouse.lastY-mouse.y
+
+    angleX += -deltaY/200
+    angleY += deltaX/200
+
+    cube.render(angleX,angleY,angleZ)
 })
 
 let cube = {
@@ -783,9 +804,10 @@ function shuffle(){
     let randomSide = Math.floor(Math.random()*6)
     let randomDirection = (Math.floor(Math.random()*2)-0.5)*2
     if(animationInterval) return
+    console.log(randomSide,randomDirection)
     scrambles++
     animationInterval = setInterval(() => { animateRotation(randomSide, randomDirection)}, 10)
-    if(scrambles > 30) clearInterval(shuffleInterval)
+    if(scrambles > 15) clearInterval(shuffleInterval)
 }
 
 let shuffleInterval = setInterval(shuffle, 10)
