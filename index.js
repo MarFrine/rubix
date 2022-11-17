@@ -18,16 +18,13 @@ let mouse = {
 let drawnCenters = []
 
 angleXSlider.oninput = () => {
-    angleX = (angleXSlider.value / 360) * Math.PI * 2
-    cube.render(angleX, angleY, angleZ)
+    changeAngle(false)
 }
 angleYSlider.oninput = () => {
-    angleY = (angleYSlider.value / 360) * Math.PI * 2
-    cube.render(angleX, angleY, angleZ)
+    changeAngle(false)
 }
 angleZSlider.oninput = () => {
-    angleZ = (angleZSlider.value / 360) * Math.PI * 2
-    cube.render(angleX, angleY, angleZ)
+    changeAngle(false)
 }
 
 const scale = 160
@@ -72,11 +69,34 @@ canvas.addEventListener("mousemove", event =>{
     let deltaX = mouse.lastX-mouse.x
     let deltaY = mouse.lastY-mouse.y
 
-    angleX += -deltaY/200
-    angleY += deltaX/200
-
-    cube.render(angleX,angleY,angleZ)
+    changeAngle(true, angleX - deltaY/200, angleY + deltaX/200, angleZ)
 })
+
+function changeAngle(fromDrag, newAngleX,newAngleY,newAngleZ){
+    if(!fromDrag){
+        newAngleX = (angleXSlider.value / 360) * Math.PI * 2
+        newAngleY = (angleYSlider.value / 360) * Math.PI * 2
+        newAngleZ = (angleZSlider.value / 360) * Math.PI * 2
+    }
+    angleX = newAngleX
+    angleY = newAngleY
+    angleZ = newAngleZ
+
+    angleX = angleX % (Math.PI*2)
+    angleY = angleY % (Math.PI*2)
+    angleZ = angleZ % (Math.PI*2)
+
+    if(angleY < 0) angleY = Math.PI*2 + angleY
+    if(angleX < 0) angleX = Math.PI*2 + angleX
+    if(angleZ < 0) angleZ = Math.PI*2 + angleZ
+
+    angleXSlider.value = angleX / (Math.PI * 2) * 360
+    angleYSlider.value = angleY / (Math.PI * 2) * 360
+    angleZSlider.value = angleZ / (Math.PI * 2) * 360
+        
+
+    cube.render(angleX, angleY, angleZ)
+}
 
 let cube = {
     solved: false,
@@ -800,14 +820,15 @@ cube.render(angleX, angleY, angleZ)
 
 let scrambles = 0
 function shuffle(){
-    
+    if(scrambles < 15) {
+        setTimeout(shuffle, 10)
+    } else {
+        scrambles = 0
+    }
     let randomSide = Math.floor(Math.random()*6)
     let randomDirection = (Math.floor(Math.random()*2)-0.5)*2
     if(animationInterval) return
-    console.log(randomSide,randomDirection)
     scrambles++
     animationInterval = setInterval(() => { animateRotation(randomSide, randomDirection)}, 10)
-    if(scrambles > 15) clearInterval(shuffleInterval)
+    
 }
-
-let shuffleInterval = setInterval(shuffle, 10)
