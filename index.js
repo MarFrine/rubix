@@ -67,7 +67,7 @@ canvas.addEventListener("mousemove", event =>{
     mouse.y = event.y
 
     let deltaX = mouse.lastX-mouse.x
-    let deltaY = mouse.lastY-mouse.y
+    let deltaY = (mouse.lastY-mouse.y)//*Math.cos(angleY)
 
     changeAngle(true, angleX - deltaY/200, angleY + deltaX/200, angleZ)
 })
@@ -111,62 +111,7 @@ let cube = {
                 { side: 3, tiles: [0, 1, 2] },
                 { side: 4, tiles: [0, 1, 2] }
             ],
-            positions: [
-                {
-                    x1: -1.5, y1: -1.5, z1: 1.5,
-                    x2: -0.5, y2: -1.5, z2: 1.5,
-                    x3: -0.5, y3: -1.5, z3: 0.5,
-                    x4: -1.5, y4: -1.5, z4: 0.5
-                },
-                {
-                    x1: -0.5, y1: -1.5, z1: 0.5,
-                    x2: 0.5, y2: -1.5, z2: 0.5,
-                    x3: 0.5, y3: -1.5, z3: 1.5,
-                    x4: -0.5, y4: -1.5, z4: 1.5
-                },
-                {
-                    x1: 0.5, y1: -1.5, z1: 0.5,
-                    x2: 1.5, y2: -1.5, z2: 0.5,
-                    x3: 1.5, y3: -1.5, z3: 1.5,
-                    x4: 0.5, y4: -1.5, z4: 1.5
-                },
-                {
-                    x1: -1.5, y1: -1.5, z1: -0.5,
-                    x2: -0.5, y2: -1.5, z2: -0.5,
-                    x3: -0.5, y3: -1.5, z3: 0.5,
-                    x4: -1.5, y4: -1.5, z4: 0.5
-                },
-                {
-                    x1: -0.5, y1: -1.5, z1: -0.5,
-                    x2: 0.5, y2: -1.5, z2: -0.5,
-                    x3: 0.5, y3: -1.5, z3: 0.5,
-                    x4: -0.5, y4: -1.5, z4: 0.5
-                },
-                {
-                    x1: 0.5, y1: -1.5, z1: -0.5,
-                    x2: 1.5, y2: -1.5, z2: -0.5,
-                    x3: 1.5, y3: -1.5, z3: 0.5,
-                    x4: 0.5, y4: -1.5, z4: 0.5
-                },
-                {
-                    x1: -1.5, y1: -1.5, z1: -1.5,
-                    x2: -0.5, y2: -1.5, z2: -1.5,
-                    x3: -0.5, y3: -1.5, z3: -0.5,
-                    x4: -1.5, y4: -1.5, z4: -0.5
-                },
-                {
-                    x1: -0.5, y1: -1.5, z1: -1.5,
-                    x2: 0.5, y2: -1.5, z2: -1.5,
-                    x3: 0.5, y3: -1.5, z3: -0.5,
-                    x4: -0.5, y4: -1.5, z4: -0.5
-                },
-                {
-                    x1: 0.5, y1: -1.5, z1: -1.5,
-                    x2: 1.5, y2: -1.5, z2: -1.5,
-                    x3: 1.5, y3: -1.5, z3: -0.5,
-                    x4: 0.5, y4: -1.5, z4: -0.5
-                }
-            ],
+            positions: createPositions(-1.5, -1.5, 1.5, "Y", 1),
             tiles: ["white", "white", "white", "white", "white", "white", "white", "white", "white"] // reihe für reihe von oben links nach oben rechts -> mitte links nach mitte recht und unten links nach untern rechts (wenn man frontal auf die seite drauf schaut)
         },
         {
@@ -175,65 +120,10 @@ let cube = {
             neighbors: [
                 { side: 0, tiles: [6, 7, 8] },
                 { side: 4, tiles: [2, 5, 8] },
-                { side: 5, tiles: [0, 1, 2] },
+                { side: 5, tiles: [6, 7, 8] },
                 { side: 2, tiles: [0, 3, 6] }
             ],
-            positions: [
-                {
-                    x1: -1.5, y1: -1.5, z1: -1.5,
-                    x2: -0.5, y2: -1.5, z2: -1.5,
-                    x3: -0.5, y3: -0.5, z3: -1.5,
-                    x4: -1.5, y4: -0.5, z4: -1.5
-                },
-                {
-                    x1: -0.5, y1: -1.5, z1: -1.5,
-                    x2: 0.5, y2: -1.5, z2: -1.5,
-                    x3: 0.5, y3: -0.5, z3: -1.5,
-                    x4: -0.5, y4: -0.5, z4: -1.5
-                },
-                {
-                    x1: 0.5, y1: -1.5, z1: -1.5,
-                    x2: 1.5, y2: -1.5, z2: -1.5,
-                    x3: 1.5, y3: -0.5, z3: -1.5,
-                    x4: 0.5, y4: -0.5, z4: -1.5
-                },
-                {
-                    x1: -1.5, y1: -0.5, z1: -1.5,
-                    x2: -0.5, y2: -0.5, z2: -1.5,
-                    x3: -0.5, y3: 0.5, z3: -1.5,
-                    x4: -1.5, y4: 0.5, z4: -1.5
-                },
-                {
-                    x1: -0.5, y1: -0.5, z1: -1.5,
-                    x2: 0.5, y2: -0.5, z2: -1.5,
-                    x3: 0.5, y3: 0.5, z3: -1.5,
-                    x4: -0.5, y4: 0.5, z4: -1.5
-                },
-                {
-                    x1: 0.5, y1: -0.5, z1: -1.5,
-                    x2: 1.5, y2: -0.5, z2: -1.5,
-                    x3: 1.5, y3: 0.5, z3: -1.5,
-                    x4: 0.5, y4: 0.5, z4: -1.5
-                },
-                {
-                    x1: -1.5, y1: 0.5, z1: -1.5,
-                    x2: -0.5, y2: 0.5, z2: -1.5,
-                    x3: -0.5, y3: 1.5, z3: -1.5,
-                    x4: -1.5, y4: 1.5, z4: -1.5
-                },
-                {
-                    x1: -0.5, y1: 0.5, z1: -1.5,
-                    x2: 0.5, y2: 0.5, z2: -1.5,
-                    x3: 0.5, y3: 1.5, z3: -1.5,
-                    x4: -0.5, y4: 1.5, z4: -1.5
-                },
-                {
-                    x1: 0.5, y1: 0.5, z1: -1.5,
-                    x2: 1.5, y2: 0.5, z2: -1.5,
-                    x3: 1.5, y3: 1.5, z3: -1.5,
-                    x4: 0.5, y4: 1.5, z4: -1.5
-                }
-            ],
+            positions: createPositions(-1.5, -1.5, -1.5, "Z", 1),
             tiles: ["red", "red", "red", "red", "red", "red", "red", "red", "red"]
         },
         {
@@ -246,62 +136,7 @@ let cube = {
                 { side: 3, tiles: [0, 3, 6] }
 
             ],
-            positions: [
-                {
-                    x1: 1.5, y1: -1.5, z1: -1.5,
-                    x2: 1.5, y2: -0.5, z2: -1.5,
-                    x3: 1.5, y3: -0.5, z3: -0.5,
-                    x4: 1.5, y4: -1.5, z4: -0.5
-                },
-                {
-                    x1: 1.5, y1: -1.5, z1: -0.5,
-                    x2: 1.5, y2: -0.5, z2: -0.5,
-                    x3: 1.5, y3: -0.5, z3: 0.5,
-                    x4: 1.5, y4: -1.5, z4: 0.5
-                },
-                {
-                    x1: 1.5, y1: -1.5, z1: 0.5,
-                    x2: 1.5, y2: -0.5, z2: 0.5,
-                    x3: 1.5, y3: -0.5, z3: 1.5,
-                    x4: 1.5, y4: -1.5, z4: 1.5
-                },
-                {
-                    x1: 1.5, y1: -0.5, z1: -1.5,
-                    x2: 1.5, y2: 0.5, z2: -1.5,
-                    x3: 1.5, y3: 0.5, z3: -0.5,
-                    x4: 1.5, y4: -0.5, z4: -0.5
-                },
-                {
-                    x1: 1.5, y1: -0.5, z1: -0.5,
-                    x2: 1.5, y2: 0.5, z2: -0.5,
-                    x3: 1.5, y3: 0.5, z3: 0.5,
-                    x4: 1.5, y4: -0.5, z4: 0.5
-                },
-                {
-                    x1: 1.5, y1: -0.5, z1: 0.5,
-                    x2: 1.5, y2: 0.5, z2: 0.5,
-                    x3: 1.5, y3: 0.5, z3: 1.5,
-                    x4: 1.5, y4: -0.5, z4: 1.5
-                },
-                {
-                    x1: 1.5, y1: 0.5, z1: -1.5,
-                    x2: 1.5, y2: 1.5, z2: -1.5,
-                    x3: 1.5, y3: 1.5, z3: -0.5,
-                    x4: 1.5, y4: 0.5, z4: -0.5
-                },
-                {
-                    x1: 1.5, y1: 0.5, z1: -0.5,
-                    x2: 1.5, y2: 1.5, z2: -0.5,
-                    x3: 1.5, y3: 1.5, z3: 0.5,
-                    x4: 1.5, y4: 0.5, z4: 0.5
-                },
-                {
-                    x1: 1.5, y1: 0.5, z1: 0.5,
-                    x2: 1.5, y2: 1.5, z2: 0.5,
-                    x3: 1.5, y3: 1.5, z3: 1.5,
-                    x4: 1.5, y4: 0.5, z4: 1.5
-                }
-            ],
+            positions: createPositions(1.5, -1.5, -1.5, "X", 1),
             tiles: ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]
         },
         {
@@ -310,66 +145,11 @@ let cube = {
             neighbors: [
                 { side: 0, tiles: [0, 1, 2] },
                 { side: 2, tiles: [2, 5, 8] },
-                { side: 5, tiles: [6, 7, 8] },
+                { side: 5, tiles: [0, 1, 2] },
                 { side: 4, tiles: [0, 3, 6] }
 
             ],
-            positions: [
-                {
-                    x1: 1.5, y1: -1.5, z1: 1.5,
-                    x2: 0.5, y2: -1.5, z2: 1.5,
-                    x3: 0.5, y3: -0.5, z3: 1.5,
-                    x4: 1.5, y4: -0.5, z4: 1.5
-                },
-                {
-                    x1: 0.5, y1: -1.5, z1: 1.5,
-                    x2: -0.5, y2: -1.5, z2: 1.5,
-                    x3: -0.5, y3: -0.5, z3: 1.5,
-                    x4: 0.5, y4: -0.5, z4: 1.5
-                },
-                {
-                    x1: -0.5, y1: -1.5, z1: 1.5,
-                    x2: -1.5, y2: -1.5, z2: 1.5,
-                    x3: -1.5, y3: -0.5, z3: 1.5,
-                    x4: -0.5, y4: -0.5, z4: 1.5
-                },
-                {
-                    x1: 1.5, y1: -0.5, z1: 1.5,
-                    x2: 0.5, y2: -0.5, z2: 1.5,
-                    x3: 0.5, y3: 0.5, z3: 1.5,
-                    x4: 1.5, y4: 0.5, z4: 1.5
-                },
-                {
-                    x1: 0.5, y1: -0.5, z1: 1.5,
-                    x2: -0.5, y2: -0.5, z2: 1.5,
-                    x3: -0.5, y3: 0.5, z3: 1.5,
-                    x4: 0.5, y4: 0.5, z4: 1.5
-                },
-                {
-                    x1: -0.5, y1: -0.5, z1: 1.5,
-                    x2: -1.5, y2: -0.5, z2: 1.5,
-                    x3: -1.5, y3: 0.5, z3: 1.5,
-                    x4: -0.5, y4: 0.5, z4: 1.5
-                },
-                {
-                    x1: 1.5, y1: 0.5, z1: 1.5,
-                    x2: 0.5, y2: 0.5, z2: 1.5,
-                    x3: 0.5, y3: 1.5, z3: 1.5,
-                    x4: 1.5, y4: 1.5, z4: 1.5
-                },
-                {
-                    x1: 0.5, y1: 0.5, z1: 1.5,
-                    x2: -0.5, y2: 0.5, z2: 1.5,
-                    x3: -0.5, y3: 1.5, z3: 1.5,
-                    x4: 0.5, y4: 1.5, z4: 1.5
-                },
-                {
-                    x1: -0.5, y1: 0.5, z1: 1.5,
-                    x2: -1.5, y2: 0.5, z2: 1.5,
-                    x3: -1.5, y3: 1.5, z3: 1.5,
-                    x4: -0.5, y4: 1.5, z4: 1.5
-                }
-            ],
+            positions: createPositions(1.5, -1.5, 1.5, "Z", -1),
             tiles: ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
         },
         {
@@ -381,62 +161,7 @@ let cube = {
                 { side: 5, tiles: [0, 3, 6] },
                 { side: 1, tiles: [0, 3, 6] }
             ],
-            positions: [
-                {
-                    x1: -1.5, y1: -1.5, z1: 1.5,
-                    x2: -1.5, y2: -0.5, z2: 1.5,
-                    x3: -1.5, y3: -0.5, z3: 0.5,
-                    x4: -1.5, y4: -1.5, z4: 0.5
-                },
-                {
-                    x1: -1.5, y1: -1.5, z1: 0.5,
-                    x2: -1.5, y2: -0.5, z2: 0.5,
-                    x3: -1.5, y3: -0.5, z3: -0.5,
-                    x4: -1.5, y4: -1.5, z4: -0.5
-                },
-                {
-                    x1: -1.5, y1: -1.5, z1: -0.5,
-                    x2: -1.5, y2: -0.5, z2: -0.5,
-                    x3: -1.5, y3: -0.5, z3: -1.5,
-                    x4: -1.5, y4: -1.5, z4: -1.5
-                },
-                {
-                    x1: -1.5, y1: -0.5, z1: 1.5,
-                    x2: -1.5, y2: 0.5, z2: 1.5,
-                    x3: -1.5, y3: 0.5, z3: 0.5,
-                    x4: -1.5, y4: -0.5, z4: 0.5
-                },
-                {
-                    x1: -1.5, y1: -0.5, z1: 0.5,
-                    x2: -1.5, y2: 0.5, z2: 0.5,
-                    x3: -1.5, y3: 0.5, z3: -0.5,
-                    x4: -1.5, y4: -0.5, z4: -0.5
-                },
-                {
-                    x1: -1.5, y1: -0.5, z1: -0.5,
-                    x2: -1.5, y2: 0.5, z2: -0.5,
-                    x3: -1.5, y3: 0.5, z3: -1.5,
-                    x4: -1.5, y4: -0.5, z4: -1.5
-                },
-                {
-                    x1: -1.5, y1: 0.5, z1: 1.5,
-                    x2: -1.5, y2: 1.5, z2: 1.5,
-                    x3: -1.5, y3: 1.5, z3: 0.5,
-                    x4: -1.5, y4: 0.5, z4: 0.5
-                },
-                {
-                    x1: -1.5, y1: 0.5, z1: 0.5,
-                    x2: -1.5, y2: 1.5, z2: 0.5,
-                    x3: -1.5, y3: 1.5, z3: -0.5,
-                    x4: -1.5, y4: 0.5, z4: -0.5
-                },
-                {
-                    x1: -1.5, y1: 0.5, z1: -0.5,
-                    x2: -1.5, y2: 1.5, z2: -0.5,
-                    x3: -1.5, y3: 1.5, z3: -1.5,
-                    x4: -1.5, y4: 0.5, z4: -1.5
-                }
-            ],
+            positions: createPositions(-1.5, -1.5, 1.5, "X", -1),
             tiles: ["green", "green", "green", "green", "green", "green", "green", "green", "green"]
         },
         {
@@ -448,62 +173,7 @@ let cube = {
                 { side: 3, tiles: [6, 7, 8] },
                 { side: 4, tiles: [6, 7, 8] }
             ],
-            positions: [
-                {
-                    x1: -1.5, y1: 1.5, z1: -0.5,
-                    x2: -0.5, y2: 1.5, z2: -0.5,
-                    x3: -0.5, y3: 1.5, z3: -1.5,
-                    x4: -1.5, y4: 1.5, z4: -1.5
-                },
-                {
-                    x1: -0.5, y1: 1.5, z1: -0.5,
-                    x2: 0.5, y2: 1.5, z2: -0.5,
-                    x3: 0.5, y3: 1.5, z3: -1.5,
-                    x4: -0.5, y4: 1.5, z4: -1.5
-                },
-                {
-                    x1: 0.5, y1: 1.5, z1: -0.5,
-                    x2: 1.5, y2: 1.5, z2: -0.5,
-                    x3: 1.5, y3: 1.5, z3: -1.5,
-                    x4: 0.5, y4: 1.5, z4: -1.5
-                },
-                {
-                    x1: -1.5, y1: 1.5, z1: 0.5,
-                    x2: -0.5, y2: 1.5, z2: 0.5,
-                    x3: -0.5, y3: 1.5, z3: -0.5,
-                    x4: -1.5, y4: 1.5, z4: -0.5
-                },
-                {
-                    x1: -0.5, y1: 1.5, z1: 0.5,
-                    x2: 0.5, y2: 1.5, z2: 0.5,
-                    x3: 0.5, y3: 1.5, z3: -0.5,
-                    x4: -0.5, y4: 1.5, z4: -0.5
-                },
-                {
-                    x1: 0.5, y1: 1.5, z1: 0.5,
-                    x2: 1.5, y2: 1.5, z2: 0.5,
-                    x3: 1.5, y3: 1.5, z3: -0.5,
-                    x4: 0.5, y4: 1.5, z4: -0.5
-                },
-                {
-                    x1: -1.5, y1: 1.5, z1: 1.5,
-                    x2: -0.5, y2: 1.5, z2: 1.5,
-                    x3: -0.5, y3: 1.5, z3: 0.5,
-                    x4: -1.5, y4: 1.5, z4: 0.5
-                },
-                {
-                    x1: -0.5, y1: 1.5, z1: 1.5,
-                    x2: 0.5, y2: 1.5, z2: 1.5,
-                    x3: 0.5, y3: 1.5, z3: 0.5,
-                    x4: -0.5, y4: 1.5, z4: 0.5
-                },
-                {
-                    x1: 0.5, y1: 1.5, z1: 1.5,
-                    x2: 1.5, y2: 1.5, z2: 1.5,
-                    x3: 1.5, y3: 1.5, z3: 0.5,
-                    x4: 0.5, y4: 1.5, z4: 0.5
-                }
-            ],
+            positions: createPositions(-1.5, 1.5, 1.5, "Y", -1),
             tiles: ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]
         }
     ],
@@ -577,6 +247,41 @@ let cube = {
     }
 }
 
+function createPositions(initX, initY, initZ, konstant, multiplier){
+    let positions = []
+
+    for(let i = 0; i < 9; i++){
+        let thisX
+        let thisY
+        let thisZ
+
+        if(konstant == "X"){
+            thisX = [initX, initX, initX, initX]
+            thisZ = [initZ + (i % 3)*multiplier, initZ + (i % 3)*multiplier + multiplier, initZ + (i % 3)*multiplier + multiplier, initZ + (i % 3)*multiplier]
+            thisY = [initY + Math.floor(i / 3)*1, initY + Math.floor(i / 3)*1, initY + Math.floor(i / 3)*1 + 1, initY + Math.floor(i / 3)*1 + 1]
+        } else if(konstant == "Y"){
+            thisX = [initX + (i % 3)*1, initX + (i % 3)*1 + 1, initX + (i % 3)*1 + 1, initX + (i % 3)*1]
+            thisY = [initY, initY, initY, initY]
+            thisZ = [initZ + Math.floor(i / 3)*(-1), initZ + Math.floor(i / 3)*(-1), initZ + Math.floor(i / 3)*(-1) - 1, initZ + Math.floor(i / 3)*(-1) - 1]
+        } else if(konstant == "Z"){
+            thisX = [initX + (i % 3)*multiplier, initX + (i % 3)*multiplier + multiplier, initX + (i % 3)*multiplier + multiplier, initX + (i % 3)*multiplier]
+            thisY = [initY + Math.floor(i / 3)*1, initY + Math.floor(i / 3)*1, initY + Math.floor(i / 3)*1 + 1, initY + Math.floor(i / 3)*1 + 1]
+            thisZ = [initZ, initZ, initZ, initZ]
+        } 
+
+        positions.push(
+            {
+                x1: thisX[0], y1: thisY[0], z1: thisZ[0],
+                x2: thisX[1], y2: thisY[1], z2: thisZ[1],
+                x3: thisX[2], y3: thisY[2], z3: thisZ[2],
+                x4: thisX[3], y4: thisY[3], z4: thisZ[3]
+            }
+        )
+    }
+    console.log(positions)
+    return positions
+}
+
 function rotate(x, y, z, angleX, angleY, angleZ) {
     let newX1 = x
     let newY1 = y * Math.cos(angleX) - z * Math.sin(angleX)
@@ -615,19 +320,6 @@ function rotateSide(side, direction) {
     let steps = 1
     if (direction == -1) steps = 3
     for (let i = 0; i < steps; i++) {
-        if(cube.state[side].center == "yellow"){
-            cube.state[side].tiles = [
-                cube.state[side].tiles[2],
-                cube.state[side].tiles[5],
-                cube.state[side].tiles[8],
-                cube.state[side].tiles[1],
-                cube.state[side].tiles[4],
-                cube.state[side].tiles[7],
-                cube.state[side].tiles[0],
-                cube.state[side].tiles[3],
-                cube.state[side].tiles[6]
-            ]
-        } else {
             cube.state[side].tiles = [
                 cube.state[side].tiles[6],
                 cube.state[side].tiles[3],
@@ -639,7 +331,6 @@ function rotateSide(side, direction) {
                 cube.state[side].tiles[5],
                 cube.state[side].tiles[2]
             ]
-        }
         
         let previousState = []
         cube.state[side].neighbors.forEach((thisNeighbor, neighborIndex) => {
@@ -650,13 +341,7 @@ function rotateSide(side, direction) {
                     previousState.push(cube.state[thisNeighbor.side].tiles[thisTile])
                     //console.log(previousState)
                 } else if (neighborIndex < cube.state[side].neighbors.length) {
-                    //console.log("override")
-                    //console.log(thisTile, tileIndex, cube.state[thisNeighbor.side].tiles[thisTile])
-                    //console.log(cube.state[cube.state[side].neighbors[(neighborIndex - 1) % 4].side].tiles[cube.state[side].neighbors[(neighborIndex - 1) % 4].tiles[tileIndex]], cube.state[thisNeighbor.side].tiles[thisTile])
                     cube.state[cube.state[side].neighbors[(neighborIndex - 1) % 4].side].tiles[cube.state[side].neighbors[(neighborIndex - 1) % 4].tiles[tileIndex]] = cube.state[thisNeighbor.side].tiles[thisTile]
-                    //console.log(cube.state[cube.state[side].neighbors[neighborIndex-1].side].tiles[thisTile], cube.state[thisNeighbor.side].tiles[thisTile])
-                    //cube.state[(thisNeighbor.side+3)%4].tiles[thisTile] = cube.state[thisNeighbor.side].tiles[thisTile]
-
                 }
             })
         })
