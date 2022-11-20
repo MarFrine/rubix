@@ -27,7 +27,7 @@ angleZSlider.oninput = () => {
     changeAngle(false)
 }
 
-const scale = 160
+const scale = 600
 const offsetX = canvas.width / 2
 const offsetY = canvas.height / 2
 
@@ -67,9 +67,13 @@ canvas.addEventListener("mousemove", event =>{
     mouse.y = event.y
 
     let deltaX = mouse.lastX-mouse.x
-    let deltaY = (mouse.lastY-mouse.y)//*Math.cos(angleY)
+    let deltaY = (mouse.lastY-mouse.y)
 
-    changeAngle(true, angleX - deltaY/200, angleY + deltaX/200, angleZ)
+    let newAngleX = angleX - deltaY/200
+    let newAngleY = (angleY + deltaX/200)//*Math.round(Math.cos(newAngleX)) 
+    let newAngleZ = (angleZ)// + deltaX/200)*Math.round(Math.sin(newAngleX))
+
+    changeAngle(true, newAngleX, newAngleY, newAngleZ)
 })
 
 function changeAngle(fromDrag, newAngleX,newAngleY,newAngleZ){
@@ -112,19 +116,19 @@ let cube = {
                 { side: 4, tiles: [0, 1, 2] }
             ],
             positions: createPositions(-1.5, -1.5, 1.5, "Y", 1),
-            tiles: ["white", "white", "white", "white", "white", "white", "white", "white", "white"] // reihe für reihe von oben links nach oben rechts -> mitte links nach mitte recht und unten links nach untern rechts (wenn man frontal auf die seite drauf schaut)
+            tiles: ["pink", "pink", "white", "white", "white", "white", "white", "white", "white"] // reihe für reihe von oben links nach oben rechts -> mitte links nach mitte recht und unten links nach untern rechts (wenn man frontal auf die seite drauf schaut)
         },
         {
             center: "red",
             angle: { x: 0, y: 0, z: 1 },
             neighbors: [
                 { side: 0, tiles: [6, 7, 8] },
-                { side: 4, tiles: [2, 5, 8] },
-                { side: 5, tiles: [6, 7, 8] },
+                { side: 4, tiles: [8, 5, 2] },
+                { side: 5, tiles: [8, 7, 6] },
                 { side: 2, tiles: [0, 3, 6] }
             ],
             positions: createPositions(-1.5, -1.5, -1.5, "Z", 1),
-            tiles: ["red", "red", "red", "red", "red", "red", "red", "red", "red"]
+            tiles: ["pink", "pink", "red", "red", "red", "red", "red", "red", "red"]
         },
         {
             center: "blue",
@@ -132,12 +136,12 @@ let cube = {
             neighbors: [
                 { side: 0, tiles: [2, 5, 8] },
                 { side: 1, tiles: [2, 5, 8] },
-                { side: 5, tiles: [2, 5, 8] },
-                { side: 3, tiles: [0, 3, 6] }
+                { side: 5, tiles: [8, 5, 2] },
+                { side: 3, tiles: [6, 3, 0] }
 
             ],
             positions: createPositions(1.5, -1.5, -1.5, "X", 1),
-            tiles: ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]
+            tiles: ["pink", "pink", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]
         },
         {
             center: "orange",
@@ -145,24 +149,24 @@ let cube = {
             neighbors: [
                 { side: 0, tiles: [0, 1, 2] },
                 { side: 2, tiles: [2, 5, 8] },
-                { side: 5, tiles: [0, 1, 2] },
-                { side: 4, tiles: [0, 3, 6] }
+                { side: 5, tiles: [2, 1, 0] },
+                { side: 4, tiles: [6, 3, 0] }
 
             ],
             positions: createPositions(1.5, -1.5, 1.5, "Z", -1),
-            tiles: ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
+            tiles: ["pink", "pink", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
         },
         {
             center: "green",
             angle: { x: 1, y: 0, z: 0 },
             neighbors: [
                 { side: 0, tiles: [0, 3, 6] },
-                { side: 3, tiles: [2, 5, 8] },
-                { side: 5, tiles: [0, 3, 6] },
+                { side: 3, tiles: [8, 5, 2] },
+                { side: 5, tiles: [6, 3, 0] },
                 { side: 1, tiles: [0, 3, 6] }
             ],
             positions: createPositions(-1.5, -1.5, 1.5, "X", -1),
-            tiles: ["green", "green", "green", "green", "green", "green", "green", "green", "green"]
+            tiles: ["pink", "pink", "green", "green", "green", "green", "green", "green", "green"]
         },
         {
             center: "yellow",
@@ -174,7 +178,7 @@ let cube = {
                 { side: 4, tiles: [6, 7, 8] }
             ],
             positions: createPositions(-1.5, 1.5, 1.5, "Y", -1),
-            tiles: ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]
+            tiles: ["pink", "pink", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]
         }
     ],
     render(angleX, angleY, angleZ) {
@@ -182,35 +186,47 @@ let cube = {
         let recteanglesToDraw = []
         this.state.forEach((thisStateSide) => {
             thisStateSide.tiles.forEach((thisColor, tileIndex) => {
-                let thisZ1 = thisStateSide.positions[tileIndex].z1
-                let thisZ2 = thisStateSide.positions[tileIndex].z2
-                let thisZ3 = thisStateSide.positions[tileIndex].z3
-                let thisZ4 = thisStateSide.positions[tileIndex].z4
-                if (thisStateSide.center == "blue" || thisStateSide.center == "green") {
-                    thisZ1 = thisStateSide.positions[tileIndex].z1
-                    thisZ2 = thisStateSide.positions[tileIndex].z2
-                    thisZ3 = thisStateSide.positions[tileIndex].z2
-                    thisZ4 = thisStateSide.positions[tileIndex].z1
+
+                let rotatedCoords = {
+                    x:[
+                        rotate(thisStateSide.positions[tileIndex].x1, thisStateSide.positions[tileIndex].y1, thisStateSide.positions[tileIndex].z1, angleX, angleY, angleZ).x,
+                        rotate(thisStateSide.positions[tileIndex].x2, thisStateSide.positions[tileIndex].y2, thisStateSide.positions[tileIndex].z2, angleX, angleY, angleZ).x,
+                        rotate(thisStateSide.positions[tileIndex].x3, thisStateSide.positions[tileIndex].y3, thisStateSide.positions[tileIndex].z3, angleX, angleY, angleZ).x,
+                        rotate(thisStateSide.positions[tileIndex].x4, thisStateSide.positions[tileIndex].y4, thisStateSide.positions[tileIndex].z4, angleX, angleY, angleZ).x,
+                    ],
+                    y:[
+                        rotate(thisStateSide.positions[tileIndex].x1, thisStateSide.positions[tileIndex].y1, thisStateSide.positions[tileIndex].z1, angleX, angleY, angleZ).y,
+                        rotate(thisStateSide.positions[tileIndex].x2, thisStateSide.positions[tileIndex].y2, thisStateSide.positions[tileIndex].z2, angleX, angleY, angleZ).y,
+                        rotate(thisStateSide.positions[tileIndex].x3, thisStateSide.positions[tileIndex].y3, thisStateSide.positions[tileIndex].z3, angleX, angleY, angleZ).y,
+                        rotate(thisStateSide.positions[tileIndex].x4, thisStateSide.positions[tileIndex].y4, thisStateSide.positions[tileIndex].z4, angleX, angleY, angleZ).y
+                    ],
+                    z:[
+                        rotate(thisStateSide.positions[tileIndex].x1, thisStateSide.positions[tileIndex].y1, thisStateSide.positions[tileIndex].z1, angleX, angleY, angleZ).z,
+                        rotate(thisStateSide.positions[tileIndex].x2, thisStateSide.positions[tileIndex].y2, thisStateSide.positions[tileIndex].z2, angleX, angleY, angleZ).z,
+                        rotate(thisStateSide.positions[tileIndex].x3, thisStateSide.positions[tileIndex].y3, thisStateSide.positions[tileIndex].z3, angleX, angleY, angleZ).z,
+                        rotate(thisStateSide.positions[tileIndex].x4, thisStateSide.positions[tileIndex].y4, thisStateSide.positions[tileIndex].z4, angleX, angleY, angleZ).z
+                    ]
                 }
+
                 recteanglesToDraw.push(
                     {
                         color: thisColor,
                         tileIndex: tileIndex,
 
-                        x1: rotate(thisStateSide.positions[tileIndex].x1, thisStateSide.positions[tileIndex].y1, thisStateSide.positions[tileIndex].z1, angleX, angleY, angleZ).x * scale + offsetX,
-                        x2: rotate(thisStateSide.positions[tileIndex].x2, thisStateSide.positions[tileIndex].y2, thisStateSide.positions[tileIndex].z2, angleX, angleY, angleZ).x * scale + offsetX,
-                        x3: rotate(thisStateSide.positions[tileIndex].x3, thisStateSide.positions[tileIndex].y3, thisStateSide.positions[tileIndex].z3, angleX, angleY, angleZ).x * scale + offsetX,
-                        x4: rotate(thisStateSide.positions[tileIndex].x4, thisStateSide.positions[tileIndex].y4, thisStateSide.positions[tileIndex].z4, angleX, angleY, angleZ).x * scale + offsetX,
+                        x1: project3d(rotatedCoords.x[0],rotatedCoords.z[0], offsetX),
+                        x2: project3d(rotatedCoords.x[1],rotatedCoords.z[1], offsetX),
+                        x3: project3d(rotatedCoords.x[2],rotatedCoords.z[2], offsetX),
+                        x4: project3d(rotatedCoords.x[3],rotatedCoords.z[3], offsetX),
 
-                        y1: rotate(thisStateSide.positions[tileIndex].x1, thisStateSide.positions[tileIndex].y1, thisStateSide.positions[tileIndex].z1, angleX, angleY, angleZ).y * scale + offsetY,
-                        y2: rotate(thisStateSide.positions[tileIndex].x2, thisStateSide.positions[tileIndex].y2, thisStateSide.positions[tileIndex].z2, angleX, angleY, angleZ).y * scale + offsetY,
-                        y3: rotate(thisStateSide.positions[tileIndex].x3, thisStateSide.positions[tileIndex].y3, thisStateSide.positions[tileIndex].z3, angleX, angleY, angleZ).y * scale + offsetY,
-                        y4: rotate(thisStateSide.positions[tileIndex].x4, thisStateSide.positions[tileIndex].y4, thisStateSide.positions[tileIndex].z4, angleX, angleY, angleZ).y * scale + offsetY,
+                        y1: project3d(rotatedCoords.y[0],rotatedCoords.z[0], offsetY),
+                        y2: project3d(rotatedCoords.y[1],rotatedCoords.z[1], offsetY),
+                        y3: project3d(rotatedCoords.y[2],rotatedCoords.z[2], offsetY),
+                        y4: project3d(rotatedCoords.y[3],rotatedCoords.z[3], offsetY),
 
-                        z1: rotate(thisStateSide.positions[tileIndex].x1, thisStateSide.positions[tileIndex].y1, thisStateSide.positions[tileIndex].z1, angleX, angleY, angleZ).z,
-                        z2: rotate(thisStateSide.positions[tileIndex].x2, thisStateSide.positions[tileIndex].y2, thisStateSide.positions[tileIndex].z2, angleX, angleY, angleZ).z,
-                        z3: rotate(thisStateSide.positions[tileIndex].x3, thisStateSide.positions[tileIndex].y3, thisStateSide.positions[tileIndex].z3, angleX, angleY, angleZ).z,
-                        z4: rotate(thisStateSide.positions[tileIndex].x4, thisStateSide.positions[tileIndex].y4, thisStateSide.positions[tileIndex].z4, angleX, angleY, angleZ).z,
+                        z1: rotatedCoords.z[0],
+                        z2: rotatedCoords.z[1],
+                        z3: rotatedCoords.z[2],
+                        z4: rotatedCoords.z[3],
 
                         averageZ: (rotate(thisStateSide.positions[tileIndex].x1, thisStateSide.positions[tileIndex].y1, thisStateSide.positions[tileIndex].z1, angleX, angleY, angleZ).z
                             + rotate(thisStateSide.positions[tileIndex].x2, thisStateSide.positions[tileIndex].y2, thisStateSide.positions[tileIndex].z2, angleX, angleY, angleZ).z
@@ -283,19 +299,38 @@ function createPositions(initX, initY, initZ, konstant, multiplier){
 }
 
 function rotate(x, y, z, angleX, angleY, angleZ) {
-    let newX1 = x
-    let newY1 = y * Math.cos(angleX) - z * Math.sin(angleX)
-    let newZ1 = y * Math.sin(angleX) + z * Math.cos(angleX)
 
-    let newX2 = newX1 * Math.cos(angleY) + newZ1 * Math.sin(angleY)
-    let newY2 = newY1
-    let newZ2 = -newX1 * Math.sin(angleY) + newZ1 * Math.cos(angleY)
 
-    let newX3 = newX2 * Math.cos(angleZ) - newY2 * Math.sin(angleZ)
-    let newY3 = newX2 * Math.sin(angleZ) + newY2 * Math.cos(angleZ)
-    let newZ3 = newZ2
+    let newX1 = x * Math.cos(angleY) + z * Math.sin(angleY)
+    let newY1 = x * Math.sin(angleX) * Math.sin(angleY) + y * Math.cos(angleX) + z * -Math.sin(angleX) * Math.cos(angleY)
+    let newZ1 = x * Math.cos(angleX) * -Math.sin(angleY) + y * Math.sin(angleX) + z * Math.cos(angleX) * Math.cos(angleY)
+
+    // obere matrix sind die beiden unteren mulitpliziert (machen das gleiche)
+    
+    /*let newX1 = x * Math.cos(angleY) + z * Math.sin(angleY)
+    let newY1 = y
+    let newZ1 = -x * Math.sin(angleY) + z * Math.cos(angleY)
+
+    let newX2 = newX1
+    let newY2 = newY1 * Math.cos(angleX) - newZ1 * Math.sin(angleX)
+    let newZ2 = newY1 * Math.sin(angleX) + newZ1 * Math.cos(angleX)*/
+
+    //-- letzte matrix für z-richtung
+
+    let newX3 = newX1 * Math.cos(angleZ) - newY1 * Math.sin(angleZ)
+    let newY3 = newX1 * Math.sin(angleZ) + newY1 * Math.cos(angleZ)
+    let newZ3 = newZ1
 
     return { x: newX3, y: newY3, z: newZ3 }
+}
+
+function project3d(value, z, offset){
+
+    let distance = -5
+    let thisZ = 1/(distance-z)
+    let newValue = value * thisZ * -scale + offset
+    
+    return newValue
 }
 
 function checkSolved() {
@@ -339,15 +374,15 @@ function rotateSide(side, direction) {
                 if (previousState.length < 3) {
                     //console.log("save")
                     previousState.push(cube.state[thisNeighbor.side].tiles[thisTile])
-                    //console.log(previousState)
+                    console.log(previousState)
                 } else if (neighborIndex < cube.state[side].neighbors.length) {
                     cube.state[cube.state[side].neighbors[(neighborIndex - 1) % 4].side].tiles[cube.state[side].neighbors[(neighborIndex - 1) % 4].tiles[tileIndex]] = cube.state[thisNeighbor.side].tiles[thisTile]
                 }
             })
         })
-        cube.state[cube.state[side].neighbors[(4 - 1) % 4].side].tiles[cube.state[side].neighbors[(4 - 1) % 4].tiles[0]] = previousState[0]
-        cube.state[cube.state[side].neighbors[(4 - 1) % 4].side].tiles[cube.state[side].neighbors[(4 - 1) % 4].tiles[1]] = previousState[1]
-        cube.state[cube.state[side].neighbors[(4 - 1) % 4].side].tiles[cube.state[side].neighbors[(4 - 1) % 4].tiles[2]] = previousState[2]
+        cube.state[cube.state[side].neighbors[3].side].tiles[cube.state[side].neighbors[3].tiles[0]] = previousState[0]
+        cube.state[cube.state[side].neighbors[3].side].tiles[cube.state[side].neighbors[3].tiles[1]] = previousState[1]
+        cube.state[cube.state[side].neighbors[3].side].tiles[cube.state[side].neighbors[3].tiles[2]] = previousState[2]
     }
     cube.render(angleX, angleY, angleZ)
 }
@@ -356,7 +391,6 @@ function rotateSide(side, direction) {
 
 
 function calcAnimatedRotation(side, subAngleX, subAngleY, subAngleZ) {
-    //index = 4
     cube.state[side].positions.forEach((thisPos, index) => {
         let newPosX1 = rotate(cube.state[side].positions[index].x1, cube.state[side].positions[index].y1, cube.state[side].positions[index].z1, subAngleX, subAngleY, subAngleZ).x
         let newPosZ1 = rotate(cube.state[side].positions[index].x1, cube.state[side].positions[index].y1, cube.state[side].positions[index].z1, subAngleX, subAngleY, subAngleZ).z
@@ -426,7 +460,7 @@ function calcAnimatedRotation(side, subAngleX, subAngleY, subAngleZ) {
         })
     })
 
-
+    console.log(cube)
 
     cube.render(angleX, angleY, angleZ)
     //setTimeout(animateRotation, 20)
@@ -448,6 +482,8 @@ function animateRotation(side, direction) {
         currentInteration = 0
         calcAnimatedRotation(side, Math.PI / 2 * (-direction) * cube.state[side].angle.x, Math.PI / 2 * (-direction) * cube.state[side].angle.y, Math.PI / 2 * (-direction) * cube.state[side].angle.z)
         rotateSide(side, direction)
+
+
     }
 }
 
@@ -516,4 +552,14 @@ function shuffle(){
     scrambles++
     animationInterval = setInterval(() => { animateRotation(randomSide, randomDirection)}, 10)
     
+}
+
+
+function white_cross(){
+    // check if white cross is formed
+    if(cube.state[0].tiles[1] == "white" && cube.state[0].tiles[3] == "white" && cube.state[0].tiles[4] == "white" && cube.state[0].tiles[5] == "white" && cube.state[0].tiles[7] == "white") return true
+
+
+
+
 }
