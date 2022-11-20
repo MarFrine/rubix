@@ -116,7 +116,7 @@ let cube = {
                 { side: 4, tiles: [0, 1, 2] }
             ],
             positions: createPositions(-1.5, -1.5, 1.5, "Y", 1),
-            tiles: ["pink", "pink", "white", "white", "white", "white", "white", "white", "white"] // reihe für reihe von oben links nach oben rechts -> mitte links nach mitte recht und unten links nach untern rechts (wenn man frontal auf die seite drauf schaut)
+            tiles: ["white", "white", "white", "white", "white", "white", "white", "white", "white"] // reihe für reihe von oben links nach oben rechts -> mitte links nach mitte recht und unten links nach untern rechts (wenn man frontal auf die seite drauf schaut)
         },
         {
             center: "red",
@@ -128,7 +128,7 @@ let cube = {
                 { side: 2, tiles: [0, 3, 6] }
             ],
             positions: createPositions(-1.5, -1.5, -1.5, "Z", 1),
-            tiles: ["pink", "pink", "red", "red", "red", "red", "red", "red", "red"]
+            tiles: ["red", "red", "red", "red", "red", "red", "red", "red", "red"]
         },
         {
             center: "blue",
@@ -141,7 +141,7 @@ let cube = {
 
             ],
             positions: createPositions(1.5, -1.5, -1.5, "X", 1),
-            tiles: ["pink", "pink", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]
+            tiles: ["blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue", "blue"]
         },
         {
             center: "orange",
@@ -154,7 +154,7 @@ let cube = {
 
             ],
             positions: createPositions(1.5, -1.5, 1.5, "Z", -1),
-            tiles: ["pink", "pink", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
+            tiles: ["orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange", "orange"]
         },
         {
             center: "green",
@@ -166,7 +166,7 @@ let cube = {
                 { side: 1, tiles: [0, 3, 6] }
             ],
             positions: createPositions(-1.5, -1.5, 1.5, "X", -1),
-            tiles: ["pink", "pink", "green", "green", "green", "green", "green", "green", "green"]
+            tiles: ["green", "green", "green", "green", "green", "green", "green", "green", "green"]
         },
         {
             center: "yellow",
@@ -178,7 +178,7 @@ let cube = {
                 { side: 4, tiles: [6, 7, 8] }
             ],
             positions: createPositions(-1.5, 1.5, 1.5, "Y", -1),
-            tiles: ["pink", "pink", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]
+            tiles: ["yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow", "yellow"]
         }
     ],
     render(angleX, angleY, angleZ) {
