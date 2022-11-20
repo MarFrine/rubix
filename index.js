@@ -27,7 +27,7 @@ angleZSlider.oninput = () => {
     changeAngle(false)
 }
 
-const scale = 600
+const scale = 1100
 const offsetX = canvas.width / 2
 const offsetY = canvas.height / 2
 
@@ -326,7 +326,7 @@ function rotate(x, y, z, angleX, angleY, angleZ) {
 
 function project3d(value, z, offset){
 
-    let distance = -5
+    let distance = -8
     let thisZ = 1/(distance-z)
     let newValue = value * thisZ * -scale + offset
     
